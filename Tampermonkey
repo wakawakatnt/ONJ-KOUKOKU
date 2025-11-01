@@ -1,0 +1,23 @@
+// ==UserScript==
+// @name         Open2ch 広告自動削除
+// @namespace    https://open2ch.net/
+// @version      1.0
+// @description  kokoku広告を自動で削除します
+// @match        *://*.open2ch.net/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    document.querySelectorAll('.kokoku').forEach(el => el.remove());
+    const observer = new MutationObserver(() => {
+        document.querySelectorAll('.kokoku').forEach(el => el.remove());
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+})();
+
+// さとる万歳
+// こっそり使えよ
+// さとるに献金もしろよ
+// 分かったか?
+// 19からの文消してええで

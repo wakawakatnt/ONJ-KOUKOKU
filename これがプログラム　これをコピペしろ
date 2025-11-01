@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Open2ch 広告自動削除（kokoku + adspot）
+// @name         Open2ch 広告・i-mobile完全削除
 // @namespace    https://open2ch.net/
-// @version      1.1
-// @description  kokoku広告とadspot広告を自動削除します
+// @version      1.2
+// @description  kokoku広告、adspot広告、i-mobileスクリプトを完全に削除します
 // @match        *://*.open2ch.net/*
 // @grant        none
 // ==/UserScript==
@@ -11,11 +11,18 @@
     'use strict';
     const removeAds = () => {
         document.querySelectorAll('.kokoku, #adspotdiv, .adspot_img').forEach(el => el.remove());
+        document.querySelectorAll('script').forEach(script => {
+            const content = script.textContent || '';
+            if (content.includes('i-mobile') || content.includes('InformationIcon')) {
+                script.remove();
+            }
+        });
     };
     removeAds();
     const observer = new MutationObserver(removeAds);
     observer.observe(document.body, { childList: true, subtree: true });
 })();
+
 
 // さとる万歳
 // こっそり使えよ

@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Open2ch 広告・i-mobile完全削除
+// @name         おんJ広告削除
 // @namespace    https://open2ch.net/
-// @version      1.2
-// @description  kokoku広告、adspot広告、i-mobileスクリプトを完全に削除します
+// @version      2.1
+// @description  おんJ広告削除
 // @match        *://*.open2ch.net/*
 // @grant        none
 // ==/UserScript==
@@ -10,17 +10,30 @@
 (function() {
     'use strict';
     const removeAds = () => {
-        document.querySelectorAll('.kokoku, #adspotdiv, .adspot_img').forEach(el => el.remove());
+        const targets = [
+            '.kokoku',
+            '#adspotdiv.adspot_img',
+            'iframe[src*="test/ad.cgi"]',
+            'iframe[src*="i-mobile.co.jp"]'
+        ];
+
+        targets.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => {
+                el.remove();
+            });
+        });
         document.querySelectorAll('script').forEach(script => {
-            const content = script.textContent || '';
-            if (content.includes('i-mobile') || content.includes('InformationIcon')) {
+            const txt = script.textContent || '';
+            if (/i-mobile\.co\.jp|InformationIcon/.test(txt)) {
                 script.remove();
             }
         });
+        document.querySelectorAll('div#adspotdiv.adspot_img').forEach(el => el.remove());
     };
     removeAds();
     const observer = new MutationObserver(removeAds);
     observer.observe(document.body, { childList: true, subtree: true });
+    setInterval(removeAds, 5000);
 })();
 
 
@@ -28,4 +41,4 @@
 // こっそり使えよ
 // さとるに献金もしろよ
 // 分かったか?
-// 27からの文消してええで
+// 40からの文消してええで
